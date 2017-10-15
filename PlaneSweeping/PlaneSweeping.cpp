@@ -24,7 +24,9 @@ void LineIntersections(std::vector<Segment*> &segments, std::vector<EventPoint> 
 	while (!e.isEmpty()) 
 	{
 		EventPoint p = e.min();
+		visualizer.clear();
 		visualizer.setPoint(p);
+		visualizer.drawSegment(p.s1, Visualizer::yellow());
 
 		if (p.isLeft()) 
 		{
@@ -33,12 +35,14 @@ void LineIntersections(std::vector<Segment*> &segments, std::vector<EventPoint> 
 			Segment* s1 = a.above(s);
 			Segment* s2 = a.below(s);
 			if (s1 != nullptr) {
+				visualizer.drawSegment(s1, Visualizer::green());
 				cv::Point x = s->line.intersect(s1->line);
 				if (x != POINT_INVALID) {
 					t.push_back(EventPoint(x, s1, s));
 				}
 			}
 			if (s2 != nullptr) {
+				visualizer.drawSegment(s2, Visualizer::green());
 				cv::Point x = s->line.intersect(s2->line);
 				if (x != POINT_INVALID) {
 					t.push_back(EventPoint(x, s, s2));
@@ -51,6 +55,8 @@ void LineIntersections(std::vector<Segment*> &segments, std::vector<EventPoint> 
 			Segment* s1 = a.above(s);
 			Segment* s2 = a.below(s);
 			if (s1 != nullptr && s2 != nullptr) {
+				visualizer.drawSegment(s1, Visualizer::blue());
+				visualizer.drawSegment(s2, Visualizer::blue());
 				cv::Point x = s1->line.intersect(s2->line);
 				if (x != POINT_INVALID) {
 					t.push_back(EventPoint(x, s1, s2));
@@ -60,26 +66,29 @@ void LineIntersections(std::vector<Segment*> &segments, std::vector<EventPoint> 
 		}
 		else /* p is intersection */
 		{
+			visualizer.drawSegment(p.s1, Visualizer::pink());
+			visualizer.drawSegment(p.s2, Visualizer::pink());
+
 			Segment* s3 = a.above(p.s1);
 			Segment* s4 = a.below(p.s2);
 			if (s3 != nullptr) {
+				visualizer.drawSegment(s3, Visualizer::red());
 				cv::Point x = s3->line.intersect(p.s2->line);
 				if (x != POINT_INVALID) {
 					t.push_back(EventPoint(x, s3, p.s2));
 				}
 			}
 			if (s4 != nullptr) {
+				visualizer.drawSegment(s4, Visualizer::red());
 				cv::Point x = p.s1->line.intersect(s4->line);
 				if (x != POINT_INVALID) {
 					t.push_back(EventPoint(x, p.s1, s4));
 				}
 			}
 			std::cout << "swap" << std::endl;
-			visualizer.swap(p.s1, p.s2);
 			a.swap(p.s1, p.s2);
 		}
 
-		visualizer.draw(a);
 
 		while (!t.empty()) {
 			EventPoint x = t.at(0);
@@ -88,8 +97,12 @@ void LineIntersections(std::vector<Segment*> &segments, std::vector<EventPoint> 
 				intersections.push_back(x);
 				e.insert(x);
 			}
+			else {
+				visualizer.drawPoint(x.point, Visualizer::white());
+			}
 		}
 
+		visualizer.draw(a);
 		visualizer.drawIntersections(intersections);
 		visualizer.redraw();
 	}
@@ -98,8 +111,8 @@ void LineIntersections(std::vector<Segment*> &segments, std::vector<EventPoint> 
 int main()
 {
 	const int N = 10; // number of lines
-	const int W = 700;
-	const int H = 400;
+	const int W = 1400;
+	const int H = 800;
 
 	cv::Point points[2 * N];
 	std::vector<Segment*> segments;

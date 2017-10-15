@@ -27,6 +27,7 @@ void Dictionary::remove(Segment * s)
 Segment * Dictionary::above(Segment * s)
 {
 	auto f = queue.upper_bound(s);
+
 	if (f != queue.end()) {
 		return *f;
 	}
@@ -36,22 +37,20 @@ Segment * Dictionary::above(Segment * s)
 Segment * Dictionary::below(Segment * s)
 {
 	auto f = queue.lower_bound(s);
-	if (f != queue.end()) {
-		return *f;
+	if (f != queue.begin()) {
+		return *(--f);
 	}
 	return nullptr;
 }
 
 void Dictionary::swap(Segment * s1, Segment * s2)
 {
-	this->remove(s1);
+ 	this->remove(s1);
 	this->remove(s2);
 
 	cv::Point tmp = s1->point;
 	s1->point = s2->point;
 	s2->point = tmp;
-
-	//std::swap<cv::Point>(s1->point, s2->point);
 
 	this->insert(s1);
 	this->insert(s2);
