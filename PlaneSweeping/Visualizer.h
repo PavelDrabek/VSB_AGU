@@ -30,6 +30,6 @@ public:
 	static cv::Scalar blue() { return cv::Scalar(1, 0, 0); }
 	static cv::Scalar white() { return cv::Scalar(1, 1, 1); }
 	static cv::Scalar yellow() { return cv::Scalar(0, 1, 1); }
-	static cv::Scalar pink() { return cv::Scalar(0.6, 1, 0); }
+	static cv::Scalar pink() { return cv::Scalar(204/255.0, 163/256.0, 236/255.0); }
 };
 
