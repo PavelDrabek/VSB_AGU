@@ -9,6 +9,7 @@
     <ClCompile>
       <AdditionalIncludeDirectories>C:\OpenCV\opencv\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
+      <SDLCheck>false</SDLCheck>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\OpenCV\opencv\build\x64\vc14\lib</AdditionalLibraryDirectories>
