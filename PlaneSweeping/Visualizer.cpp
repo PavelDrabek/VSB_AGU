@@ -24,11 +24,14 @@ void Visualizer::drawPoint(cv::Point p, cv::Scalar c, int radius)
 	drawPoint(matLines, p, c, radius);
 }
 
-void Visualizer::drawSegment(Segment * s1, cv::Scalar c, bool showPoint)
+void Visualizer::drawSegment(Segment * s1, cv::Scalar c, cv::Scalar pointColor)
 {
 	drawLine(matLines, s1->line, c);
-	if (showPoint) {
-		drawPoint(s1->point, c);
+	if (pointColor == blue()) {
+		drawPoint(s1->line.p2, pointColor, 6);
+	}
+	else {
+		drawPoint(s1->point, pointColor, 6);
 	}
 }
 
@@ -43,7 +46,9 @@ Visualizer::Visualizer(const int W, const int H, std::vector<Segment*>& segments
 
 	for (int i = 0; i < segments.size(); i++)
 	{
-		drawLine(segments.at(i)->line);
+		Segment* s = segments.at(i);
+		drawLine(s->line);
+		cv::putText(matStatic, s->name, s->line.p1 + cv::Point(-20, 10), 1, 2, Visualizer::white());
 	}
 }
 

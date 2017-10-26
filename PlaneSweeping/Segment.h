@@ -7,10 +7,13 @@ public:
 
 	Line line;
 	cv::Point point;
+	std::string name;
 
 	bool operator<(const Segment &rhs) const;
 	bool operator>(const Segment &rhs) const;
 	bool operator<=(const Segment &rhs) const;
 	bool operator>=(const Segment &rhs) const;
+
+	//bool operator(const Segment* lhs, const Segment* rhs) const;
 };
 

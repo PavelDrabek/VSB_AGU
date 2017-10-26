@@ -37,20 +37,22 @@ Segment * Dictionary::above(Segment * s)
 Segment * Dictionary::below(Segment * s)
 {
 	auto f = queue.lower_bound(s);
-	if (f != queue.begin()) {
+	auto b = queue.begin();
+
+
+	if (f != b) {
 		return *(--f);
 	}
 	return nullptr;
 }
 
-void Dictionary::swap(Segment * s1, Segment * s2)
+void Dictionary::swap(Segment * s1, Segment * s2, cv::Point p)
 {
  	this->remove(s1);
 	this->remove(s2);
 
-	cv::Point tmp = s1->point;
-	s1->point = s2->point;
-	s2->point = tmp;
+	s1->point = cv::Point(p.x, p.y + 1);
+	s2->point = cv::Point(p.x, p.y);
 
 	this->insert(s1);
 	this->insert(s2);

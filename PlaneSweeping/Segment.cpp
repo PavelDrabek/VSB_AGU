@@ -13,6 +13,7 @@ Segment::~Segment()
 }
 
 bool Segment::operator<(const Segment &rhs) const {
+	std::cout << this->point.y << " < " << rhs.point.y << ((this->point.y < rhs.point.y) ? " TRUE" : " FALSE") << std::endl;
 	return this->point.y < rhs.point.y;
 }
 
