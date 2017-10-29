@@ -41,11 +41,12 @@ void Visualize::drawPoints(std::vector<cv::Point>& points)
 void Visualize::drawHull(std::vector<cv::Point>& hull, bool final)
 {
 	int size = hull.size();
-	cv::circle(matPoints, hull[0], 5, cv::Vec3f(0, 0, 1), 2);
+	//cv::circle(matPoints, hull[0], 5, cv::Vec3f(0, 0, 1), 2);
+	//cv::circle(matPoints, hull[1], 5, cv::Vec3f(0, 1, 1), 2);
 	auto color = final ? cv::Vec3f(1, 0, 1) : cv::Vec3f(1, 1, 0);
 	for (size_t i = 0; i < size; i++)
 	{
-		cv::line(matPoints, hull[i], hull[(i+1) % size], color);
+		cv::line(matHulls, hull[i], hull[(i+1) % size], color);
 	}
 }
 
@@ -64,7 +65,7 @@ void Visualize::visualize()
 
 	cv::add(matPoints, matHulls, mat);
 
-	cv::circle(mat, cv::Point(10, 10), 3, cv::Vec3f(1, 1, 1), -1);
+	//cv::circle(mat, cv::Point(10, 10), 3, cv::Vec3f(1, 1, 1), -1);
 
 	cv::imshow("mat", mat);
 	cv::waitKey(waitMs);

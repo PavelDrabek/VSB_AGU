@@ -4,11 +4,11 @@
 #include "stdafx.h"
 #include "ConvexHull.h"
 
-const int N = 20; // number of lines
+const int N = 300; // number of lines
 const int W = 1400;
 const int H = 800;
 
-Visualize visualizer(W, H, 0);
+Visualize visualizer(W, H, 1);
 
 int main(int, char**)
 {
@@ -51,16 +51,17 @@ void dac(std::vector<cv::Point> points, HULL& hullOut)
 		}
 		else {
 			hullOut.push_back(points[0]);
-			if (points[1].y < points[2].y) { // if index 1 is above index 2
-				hullOut.push_back(points[1]);
-				hullOut.push_back(points[2]);
-			} else{
+
+			if (orientation(points[0], points[1], points[2]) < 0) {
 				hullOut.push_back(points[2]);
 				hullOut.push_back(points[1]);
+			} else {
+				hullOut.push_back(points[1]);
+				hullOut.push_back(points[2]);
 			}
 		}
-		visualizer.drawHull(hullOut);
-		visualizer.visualize();
+		//visualizer.drawHull(hullOut);
+		//visualizer.visualize();
 		return;
 	}
 
@@ -78,20 +79,36 @@ HULL joinHulls(HULL& left, HULL& right)
 
 	HULL j;
 
-	for (size_t i = 0; i <= lt; i++) {
+	//visualizer.clearHulls();
+
+	int i = 0;
+	do {
+		//cv::circle(visualizer.matHulls, left[i], 3, cv::Vec3f(0, 0, 1), 2);
+		//visualizer.visualize();
 		j.push_back(left[i]);
-	}
-	for (size_t i = rt; i <= rb; i++) {
+		i = (++i) % left.size();
+	} while (i != (lt + 1) % left.size());
+
+	i = rt;
+	do {
+		//cv::circle(visualizer.matHulls, right[i], 3, cv::Vec3f(1, 0, 0), 2);
+		//visualizer.visualize();
 		j.push_back(right[i]);
-	}
-	for (size_t i = lb; i < left.size(); i++) {
-		j.push_back(left[i]);
+		i = (++i) % right.size();
+	} while (i != (rb + 1) % right.size());
+
+	if (lb != lt && lb != 0) {
+		i = lb;
+		do {
+			//cv::circle(visualizer.matHulls, left[i], 3, cv::Vec3f(0, 1, 0), 2);
+			//visualizer.visualize();
+			j.push_back(left[i]);
+		} while ((++i) % left.size() != 0);
 	}
 
-	cv::line(visualizer.matHulls, left[lt], right[rt], cv::Scalar(1, 0, 0));
-	cv::line(visualizer.matHulls, left[lb], right[rb], cv::Scalar(1, 0, 0));
-	visualizer.drawHull(j);
-	visualizer.visualize();
+	//visualizer.clearHulls();
+	//visualizer.drawHull(j);
+	//visualizer.visualize();
 
 	return j;
 }
